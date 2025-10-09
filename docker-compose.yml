@@ -1,0 +1,27 @@
+services:
+  mini-ciphers-app:
+    build: .
+    ports:
+      - "18080:18080"
+    environment:
+      - PORT=18080
+    volumes:
+      - ./static:/app/static
+      - ./filebin:/app/filebin
+    restart: unless-stopped
+    depends_on:
+      - mini-ciphers-db
+
+  mini-ciphers-db:
+    image: mongo:noble
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    env_file:
+      - ".env"
+    command: >
+      mongod --auth
+
+volumes:
+  db-data:
+

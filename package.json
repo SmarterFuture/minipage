@@ -1,0 +1,27 @@
+{
+  "name": "mini-ciphers",
+  "version": "1.0.0",
+  "main": "server.ts",
+  "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "@types/bun": "^1.2.23",
+    "@types/is-email": "^1.0.0",
+    "@types/nodemailer": "^7.0.2"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "private": true,
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cookie": "^1.0.2",
+    "discord.js": "^14.22.1",
+    "dotenv": "^17.2.3",
+    "hono": "^4.9.9",
+    "is-email": "^1.0.2",
+    "mongodb": "^6.20.0",
+    "nodemailer": "^7.0.6",
+    "superstruct": "^2.0.2",
+    "uuid": "^13.0.0"
+  }
+}
