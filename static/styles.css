@@ -3,26 +3,35 @@ body {
     margin: 0;
     background-color: #f7f7f7;
     color: #333;
+    min-width: 300px;
 }
 
 .container {
-    max-width: 600px;
-    margin: 2rem auto;
+    max-width: 900px;
+    min-width: 300px;
+    margin: 10px;
     padding: 2rem;
     background: white;
     border-radius: 12px;
     box-shadow: 0 8px 16px rgba(0,0,0,0.2);
     text-align: center;
+    box-sizing: border-box;
+}
+
+@media (min-width: 900px) {
+    .container {
+        margin: 2rem auto;
+    }
 }
 
 /* not in use */
-.niu-container {
-    text-align: center;
-    background: white;
-    padding: 2rem 3rem;
-    border-radius: 12px;
-    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-}
+/* .container { */
+/*     text-align: center; */
+/*     background: white; */
+/*     padding: 2rem 3rem; */
+/*     border-radius: 12px; */
+/*     box-shadow: 0 8px 16px rgba(0,0,0,0.2); */
+/* } */
 
 code {
     padding: 0.2rem 0.4rem;
@@ -37,10 +46,8 @@ p, ul, li {
     text-align: left;
 }
 
-
-p.message {
-    color: red;
-    font-weight: bold;
+p.afterword {
+    white-space: pre-line;
 }
 
 a {
@@ -57,6 +64,8 @@ embed {
     margin-top: 1rem;
     border: 1px solid #ccc;
     border-radius: 8px;
+    width: 100%;
+    aspect-ratio: 1 / 1.414; 
 }
 
 a.button {
@@ -72,5 +81,66 @@ a.button {
 
 a.button:hover {
     background-color: #1664c1;
+}
+
+.banner {
+    padding: 1rem;
+    color: #222;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    font-size: 1rem;
+    line-height: 1.4;
+}
+
+.banner.error {
+    background-color: #ffe0e0;
+    border-bottom: 2px solid #e0a6a6;
+}
+
+.banner.close {
+    float: right;
+    cursor: pointer;
+    font-weight: bold;
+    padding: 0 0.5rem;
+}
+
+.success-section {
+    margin-top: 2rem;
+    padding: 1rem 1.5rem;
+    background-color: #f6fff6;
+    border: 1px solid #bfe0bf;
+    border-radius: 6px;
+}
+
+.info-section {
+    margin-top: 2rem;
+    padding: 1rem 1.5rem;
+    background-color: #e8f0ff;
+    border: 1px solid #a6b8e0;
+    border-radius: 6px;
+}
+
+.last-section {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background-color: #f8faff;
+    border: 1px solid #cfdaf0;
+    border-radius: 6px;
+    line-height: 1.5;
+}
+
+.next-btn {
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    background-color: #e2ffe2;
+    border: 1px solid #a6d8a8;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+.next-btn:hover {
+    background-color: #d1ffd1;
 }
 

@@ -1,63 +1,86 @@
+import { head } from "./const"
 
 
-export function puzzlePage(id, file, insight) {
+export function puzzlePage(id, file, insight, solved = false, validKey = true) {
+    const banner = !validKey
+        ? `
+<div class="banner error">
+    Hmm... that password/key doesn’t seem quite right.<br>
+    Take another look — maybe there’s a small hint you missed?
+    <span class="close" onclick="this.parentElement.style.display='none'">✖</span>
+</div>
+        `
+    : ''
+
+    const success = solved
+        ? `
+<div class="success-section">
+    <h2>🎉🎉 YAY! You did it! 🎉🎉</h2>
+    <p>
+        Hopefully it was tastefully challenging. Here, enjoy the next one!
+    </p>
+
+    <button class="next-btn" onclick="location.href='/${id + 1}'">
+        ➡️ Next Puzzle
+    </button>
+
+    <h4>Author’s notes:</h4>
+    <p>
+        It wouldn’t be nearly as rewarding without these little endings,
+        where authors share a bit of the story behind how they created
+        the puzzles.
+    </p>
+    <p class="afterword">${insight}</p>
+</div>
+        `
+        : ''
+
     return `
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Puzzle ${id+1}</title>
-    <link rel="stylesheet" href="/static/styles.css">
-</head>
+${head(`Puzzle ${id}`)}
 <body>
-    <div class="container">
-        <h1>Puzzle ${id+1}</h1>
+    ${banner}
+        <div class="container">
+        <h1>Puzzle ${id}</h1>
         <a href="/">Home</a>
-        <h2>🎉🎉 YAY! You did it! 🎉🎉</h2>
-        <p>
-        Hopegully it was tastefully challenging. Here, enjoy the next one
-        </p>
-        <embed src="/static/${file}" width="600" height="850" type="application/pdf">
-        <h4>Previous puzzle -- Author's notes:</h4>
-        <p>
-        It wouldn’t be nearly as rewarding without these little endings, where authors share a bit of
-        the story behind how they created the puzzles.
-        </p>
-        <p>
-        ${insight}
-        </p>
+        ${success}
+        <embed src="/static/${file}" type="application/pdf">
     </div>
 </body>
 </html>
-`;}
+  `
+}
 
-export function puzzlePageLast(id, insight) {
+export function puzzlePageLast(id, valid = true) {
+    const reason = valid
+        ? "this one is the last one I have prepared."
+        : "the cipher you tried to reach doesn’t exist."
+
     return `
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Puzzle ${id+1}</title>
-    <link rel="stylesheet" href="/static/styles.css">
-</head>
+${head(`Puzzle ${id}`)}
 <body>
-    <div class="container">
-        <h1>Puzzle ${id+1}</h1>
-        <a href="/">Home</a>
-        <h2>🎉🎉 YAY! You did it! 🎉🎉</h2>
-        <p>
-        Hopegully it was tastefully challenging. Unfortunately this one is the last one I have prepared.
-        I will try to make one every week, so if you want, keep checking.
-        </p>
-        <h4>Previous puzzle -- Author's notes:</h4>
-        <p>
-        It wouldn’t be nearly as rewarding without these little endings, where authors share a bit of
-        the story behind how they created the puzzles.
-        </p>
-        <p>
-        ${insight}
-        </p>
+  <div class="container">
+    <h1>Puzzle ${id}</h1>
+    <a href="/">Home</a>
+
+    <div class="info-section">
+      <h2>🧩 This cipher doesn’t exist or was the last one in the series.</h2>
     </div>
+
+    <div class="last-section">
+      <p>Unfortunately, ${reason}</p>
+      <p>
+        I’ll try to make a new one every week —  
+        so if you’d like, keep checking back here from time to time.
+      </p>
+      <p>Thanks for solving and being part of it 💫</p>
+    </div>
+  </div>
 </body>
 </html>
-`;}
+    `
+}
+

@@ -1,17 +1,13 @@
+import { head } from "./const";
 
-export function homePage(message) {
+export function homePage() {
     return `
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Puzzle Home</title>
-    <link rel="stylesheet" href="/static/styles.css">
-</head>
+${head("Puzzle Home")}
 <body>
     <div class="container">
         <h1>Welcome</h1>
-        ${message ? `<p class="message">${message}</p>` : ''}
         <p>
         This is a small collection of ciphers/puzzles for people that are bored, like me.
         </p>
@@ -23,7 +19,7 @@ export function homePage(message) {
         </p>
         <h2>Interested?</h2>
         <p>
-        Try the first cipher! <a href="/0-this_is_KEY">Go!</a>
+        Try the first cipher! <a href="/1">Go!</a>
         </p>
         <h2>About keys/passwords</h2>
         <p>
@@ -32,7 +28,8 @@ export function homePage(message) {
         <li>Use underlines as spaces.</li>
         <li>To enter key/password for checking enter URL as
             <a><code>https://miniture.org/&lt;id&gt;-&lt;key/password&gt;</code></a></li>
-        <li>if you have entered correct key/password show you the next cipher</li>
+        <li>If you have entered correct key/password it show you the next cipher</li>
+        <li>For more information check out this little <a href="/0">demo</a></li>
         </p>
         <p>
         For example:

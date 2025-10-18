@@ -13,16 +13,19 @@ Literally it will stay like is, with no framework and extremely light weight
 - [ ] Chat
     - [ ] create chat page
     - [x] forward questions to and fro discord
-    - [ ] attachments
+    - [x] attachments
         - [x] from discord
-        - [ ] by post method
-        - [ ] check if pdf, png, jpg
+        - [x] by post method
+        - [x] check if pdf, png, jpg
 - [ ] Ciphers
-    - [ ] move to db / fs
+    - [x] move to db / fs
     - [ ] discord slash commands
-        - [ ] add new
+        - [x] add new
         - [ ] add hint
-        - [ ] remove cipher
-- [ ] Nicer submit page
-    - [ ] move behind the scene here, when correct
+        - [x] remove cipher
+    - [x] view functions
+    - [x] nice page
+- [ ] ~Nicer submit page~
+    - [ ] ~move behind the scene here, when correct~
 - [ ] add nav bar
+    - [ ] next/solving -> moves to currently solving cipher from cookie

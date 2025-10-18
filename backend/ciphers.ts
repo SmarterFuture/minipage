@@ -1,0 +1,52 @@
+import type { Context } from "hono";
+import type { IUser } from "./types";
+import { checkSession } from "./auth";
+import { db } from "./setup";
+import type { ICipher } from "./types/db";
+import { getCookie } from "hono/cookie";
+import { puzzlePage, puzzlePageLast } from "../views/puzzle";
+
+
+
+export async function getCipher(ctx: Context, id: number, pass: string | null) {
+    const token = getCookie(ctx, "session");
+    const session = await checkSession(token || "" );
+     
+    let guest; 
+    let user_id;
+    if (!session.ok) {
+        guest = true;
+    } else {
+        guest = false;
+        user_id = session.data.id;
+    }
+    
+    const cipher = await db
+        .collection<ICipher>("ciphers")
+        .findOne({ _id: id }) 
+    
+    if (!cipher) {
+        return ctx.html(puzzlePageLast(id, false))
+    }
+
+    if (pass === null) {
+        return ctx.html(puzzlePage(id, cipher.file.filename, ""))
+    }
+    const r_pass = pass.replaceAll(" ", "-");
+
+    if (cipher.passkey !== r_pass) {
+        return ctx.html(puzzlePage(id, cipher.file.filename, "", false, false))
+    }
+    
+    if (!guest) {
+        const key = `solved.${id}`;
+        db.collection<IUser>("users")
+            .updateOne(
+                { _id: user_id, [key]: { $exists: false }},
+                { $set: { [key]: new Date() }}
+            )
+    }
+
+    return ctx.html(puzzlePage(id, cipher.file.filename, cipher.afterword, true))
+
+}
