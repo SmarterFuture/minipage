@@ -128,7 +128,7 @@ async function putCipher(passkey: string, cipher: Attachment, talk: Attachment) 
 
     return db.collection<ICipher>("ciphers")
         .insertOne({
-            _id: id,
+            cipher_id: id,
             passkey: r_key,
             afterword: r_talk,
             file: {
@@ -170,23 +170,23 @@ async function editCipher(id: number, passkey: String | null, cipher: Attachment
     }
 
     return db.collection<ICipher>("ciphers")
-        .updateOne({ _id: id }, { $set: update })
+        .updateOne({ cipher_id: id }, { $set: update })
 }
 
 async function removeCipher(id: number) {
     
     await db.collection<ICipher>("ciphers")
-        .deleteOne({ _id: id})
+        .deleteOne({ cipher_id: id})
     
     await db.collection<ICipher>("ciphers")
         .updateMany(
-            { id: { $gt: id }},
-            { $inc: { id: -1 }}
+            { cipher_id: { $gt: id }},
+            { $inc: { cipher_id: -1 }}
         )
     
     await db.collection<ICounter>("ciphers")
         .updateOne(
-            { id: "serial" },
+            { _id: "serial" },
             { $inc: { seq: -1 }}
         )
 }

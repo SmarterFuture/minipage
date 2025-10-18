@@ -20,7 +20,7 @@ export function puzzlePage(id, file, insight, solved = false, validKey = true) {
         Hopefully it was tastefully challenging. Here, enjoy the next one!
     </p>
 
-    <button class="next-btn" onclick="location.href='/${id + 1}'">
+    <button class="next-btn" onclick="location.href='/${id + 1}?next=true'">
         ➡️ Next Puzzle
     </button>
 
@@ -54,7 +54,7 @@ ${head(`Puzzle ${id}`)}
 
 export function puzzlePageLast(id, valid = true) {
     const reason = valid
-        ? "this one is the last one I have prepared."
+        ? "this one was the last one I have prepared."
         : "the cipher you tried to reach doesn’t exist."
 
     return `

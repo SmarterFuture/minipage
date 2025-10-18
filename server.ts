@@ -42,13 +42,15 @@ app.post("/getMessages", auth, getMessages);
 app.get("/:id_pass", (ctx: Context) => {
     const id_pass = ctx.req.param("id_pass");
     const [ id, pass ] = id_pass.split("-");
+
+    const next = Boolean(ctx.req.query("next"));
     
     let cipher_id = Number(id);
     cipher_id = Number.isInteger(cipher_id) ? cipher_id : -1;
 
     const passkey = pass || null;
 
-    return getCipher(ctx, cipher_id, passkey);
+    return getCipher(ctx, cipher_id, passkey, next);
 });
 
 export default {

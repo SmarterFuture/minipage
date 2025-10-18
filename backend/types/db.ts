@@ -13,7 +13,7 @@ export interface IUser {
 } 
 
 export interface ISolved {
-    [key: number]: Date
+    [key: string]: Date
 }
 
 export interface ISession {
@@ -37,7 +37,7 @@ export interface IFile {
 }
 
 export interface ICipher {
-    _id: number
+    cipher_id: number,
     passkey: string
     file: IFile,
     afterword: string,

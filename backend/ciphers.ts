@@ -8,7 +8,7 @@ import { puzzlePage, puzzlePageLast } from "../views/puzzle";
 
 
 
-export async function getCipher(ctx: Context, id: number, pass: string | null) {
+export async function getCipher(ctx: Context, id: number, pass: string | null, next = false) {
     const token = getCookie(ctx, "session");
     const session = await checkSession(token || "" );
      
@@ -23,10 +23,10 @@ export async function getCipher(ctx: Context, id: number, pass: string | null) {
     
     const cipher = await db
         .collection<ICipher>("ciphers")
-        .findOne({ _id: id }) 
+        .findOne({ cipher_id: id }) 
     
     if (!cipher) {
-        return ctx.html(puzzlePageLast(id, false))
+        return ctx.html(puzzlePageLast(id, next))
     }
 
     if (pass === null) {
@@ -39,7 +39,8 @@ export async function getCipher(ctx: Context, id: number, pass: string | null) {
     }
     
     if (!guest) {
-        const key = `solved.${id}`;
+        const obj_id = cipher._id.toString();
+        const key = `solved.${obj_id}`;
         db.collection<IUser>("users")
             .updateOne(
                 { _id: user_id, [key]: { $exists: false }},
@@ -48,5 +49,4 @@ export async function getCipher(ctx: Context, id: number, pass: string | null) {
     }
 
     return ctx.html(puzzlePage(id, cipher.file.filename, cipher.afterword, true))
-
 }
