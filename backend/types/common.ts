@@ -1,5 +1,6 @@
-import { define, is, number, object, string, type Describe } from "superstruct";
+import { define, instance, is, number, object, optional, string, type Describe } from "superstruct";
 import isEmail from 'is-email';
+import type { FormDataEntryValue } from "bun";
 
 export type Result<T, E> = { ok: true; data: T } | { ok: false; error: E };
 
@@ -15,6 +16,14 @@ export function validateData<T>(body: any, type: Describe<T>): Result<T, string>
     } else {
         return Ok(body)
     }
+}
+
+export function formDataToObject(data: FormData): Record<string, FormDataEntryValue> {
+    const obj: Record<string, FormDataEntryValue> = {};
+    for (const [key, value] of data.entries()) {
+        obj[key] = value
+    }
+    return obj
 }
 
 const email = () => define<string>('email', (value: any) => value !== undefined && isEmail(value))
@@ -34,7 +43,7 @@ export const TReset = object({
 
 export const TMessage = object({
     text: string(),
-    other: string(), // will be in the future changed to file
+    file: optional(instance(File)),
 })
 
 export const TView = object({

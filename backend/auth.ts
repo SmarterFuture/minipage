@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import { v4 as uuidv4 } from "uuid";
 import nodemailer from "nodemailer";
-import { type Context, type Next } from "hono";
+import type { Context, Next } from "hono";
 import { getCookie } from "hono/cookie";
 import type { ObjectId, WithId } from "mongodb";
 import { Cookie } from "bun";
@@ -150,7 +150,7 @@ export async function auth(ctx: Context, next: Next) {
     const session_token = getCookie(ctx, "session");
     const session = await checkSession(session_token || "");
     if ( !session.ok )
-        return throwError(ctx, 404, session.error);
+        return throwError(ctx, 401, session.error);
 
     const user_id = session.data;
 

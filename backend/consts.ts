@@ -29,3 +29,4 @@ export const FS_PATH = requireEnv("FS_PATH");
 export const MAX_AGE = 60 * 60 * 24;
 
 export const HOME_PATH = "/app";
+export const STATIC_PATH = "/app/static";

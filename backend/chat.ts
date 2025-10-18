@@ -8,6 +8,7 @@ import { TMessage, TView, validateData, type IFile, type IMessages, type IUser }
 import { throwError } from "./funcs";
 import { db, discord_client } from "./setup";
 import { DISCORD_CHANNEL_ID, FS_PATH, HOME_PATH } from "./consts";
+import { formDataToObject } from "./types/common";
 
 
 function checkFileType(mimetype: string): boolean {
@@ -50,20 +51,55 @@ async function getThread(client: Client, thread_id?: string, name?: string):
     * This is web-page function
 */
 export async function postMessage(ctx: Context) {
-
-    const body = validateData(await ctx.req.json(), TMessage);
+    
+    const body = validateData(formDataToObject(await ctx.req.formData()), TMessage);
     if ( !body.ok ) {
         return throwError(ctx, 400, body.error);
     }
 
     const user = ctx.get("user");
-    const { text } = body.data;
+    const { text, file } = body.data;
+    
+    let uploads: Array<IFile> = [];
+    let file_res: string;
+    let files: Array<string> = [];
+
+    if (!file) {
+        file_res = "No file uploaded";
+    } else if ( file.size === 5242880) {
+        file_res = `Ignoring ${file.name} - file too big`
+    } else if ( !checkFileType(file.type) ) {
+        file_res = `Ignoring ${file.name} - invalid type`
+    } else {
+       
+        const handle = uuidv4() + path.extname(file.name);
+
+        const dirpath = path.join(FS_PATH, user._id.toString());
+        const filepath = path.join(dirpath, handle);
+        const r_fp = path.join(HOME_PATH, filepath);
+        
+        await fs.mkdir(path.join(HOME_PATH, dirpath), { recursive: true })
+
+        file.arrayBuffer()
+            .then(a_buf => Buffer.from(a_buf))
+            .then(buf => fs.writeFile(r_fp, buf));
+
+        uploads.push({
+            mimetype: file.type,
+            filename: file.name,
+            path: filepath
+        } as IFile);
+
+        file_res = `File ${file.name} uploaded as ${filepath}`
+        files.push(r_fp);
+    }
 
     db.collection<IMessages>("messages").insertOne({
         user_id: user._id,
         who: "you",
         created: new Date(),
-        text 
+        text,
+        attachment: uploads
     } as IMessages);
 
     const thread = await getThread(discord_client, user.thread_id, user.email);
@@ -74,8 +110,11 @@ export async function postMessage(ctx: Context) {
         })
 
     return thread
-        .send(text)
-        .then(_ => ctx.json({msg: "Post succesfully created"}))
+        .send({
+            content: text,
+            files
+        })
+        .then(_ => ctx.json({msg: "Post succesfully created", file_res}))
         .catch(e => throwError(ctx, 500, e));
 }
 
@@ -113,10 +152,8 @@ export async function threadResponse(msg: Message) {
 
         return fetch(file.url)
             .then(res => res.arrayBuffer())
-            .then(a_buf => {
-                const buf = Buffer.from(a_buf);
-                fs.writeFile(r_fp, buf);
-            })
+            .then(a_buf => Buffer.from(a_buf))
+            .then(buf => fs.writeFile(r_fp, buf))
             .then(_ => { return {
                 filename: file.name,
                 mimetype: file.contentType,
