@@ -10,8 +10,8 @@ Literally it will stay like is, with no framework and extremely light weight
     - [x] user storing
     - [x] token storing
     - [ ] nice page
-- [ ] Chat
-    - [ ] create chat page
+- [x] Chat
+    - [x] create chat page
     - [x] forward questions to and fro discord
     - [x] attachments
         - [x] from discord
@@ -28,4 +28,4 @@ Literally it will stay like is, with no framework and extremely light weight
 - [ ] ~Nicer submit page~
     - [ ] ~move behind the scene here, when correct~
 - [ ] add nav bar
-    - [ ] next/solving -> moves to currently solving cipher from cookie
+- [ ] next/solving -> moves to currently solving cipher from cookie

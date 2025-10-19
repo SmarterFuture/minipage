@@ -1,14 +1,14 @@
 import { serveStatic } from "hono/bun";
 import { Hono, type Context } from "hono";
 
-import { homePage } from "./views/home";
-
 import { auth, login, register, requestReset, resetPassword, verifyEmail } from "./backend/auth";
 import { getMessages, postMessage, threadResponse } from "./backend/chat";
-import { discord_client } from "./backend/setup/discord";
+import { getCipher } from "./backend/ciphers";
 import { PORT } from "./backend/consts";
 import { checkAccess } from "./backend/files";
-import { getCipher } from "./backend/ciphers";
+import { discord_client } from "./backend/setup/discord";
+import { chatsPage, homePage, loginPage } from "./views";
+
 
 
 const app = new Hono();
@@ -26,7 +26,7 @@ app.get("/", (c: Context) => {
 
 app.post("/register", register);
 app.post("/login", login);
-app.get("/verify", (ctx) => {
+app.get("/verify", (ctx: Context) => {
     const token = ctx.req.query("token") || "";
     return verifyEmail(ctx, token);
 });
@@ -35,6 +35,9 @@ app.get("/resetPassword", (ctx) => {
     const token = ctx.req.query("token") || "";
     return resetPassword(ctx, token);
 });
+
+app.get("/chats", (ctx: Context) => ctx.html(chatsPage()));
+app.get("/login", (ctx: Context) => ctx.html(loginPage()));
 
 app.post("/postMessage", auth, postMessage);
 app.post("/getMessages", auth, getMessages);

@@ -16,7 +16,9 @@ export const MONGO_DATABASE = requireEnv("MONGO_DATABASE");
 
 export const MAIL_LOGIN = requireEnv("MAIL_LOGIN");
 export const MAIL_PASS = requireEnv("MAIL_PASS");
+
 export const MAIL_USER = requireEnv("MAIL_USER");
+export const SUPPORT_MAIL = requireEnv("SUPPORT_MAIL");
 
 export const BASE_URL = requireEnv("BASE_URL");
 

@@ -14,7 +14,7 @@ export function puzzlePage(id, file, insight, solved = false, validKey = true) {
 
     const success = solved
         ? `
-<div class="success-section">
+<div class="success section">
     <h2>🎉🎉 YAY! You did it! 🎉🎉</h2>
     <p>
         Hopefully it was tastefully challenging. Here, enjoy the next one!
@@ -66,11 +66,11 @@ ${head(`Puzzle ${id}`)}
     <h1>Puzzle ${id}</h1>
     <a href="/">Home</a>
 
-    <div class="info-section">
+    <div class="info section">
       <h2>🧩 This cipher doesn’t exist or was the last one in the series.</h2>
     </div>
 
-    <div class="last-section">
+    <div class="last section">
       <p>Unfortunately, ${reason}</p>
       <p>
         I’ll try to make a new one every week —  

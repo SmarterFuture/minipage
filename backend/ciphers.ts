@@ -4,7 +4,7 @@ import { checkSession } from "./auth";
 import { db } from "./setup";
 import type { ICipher } from "./types/db";
 import { getCookie } from "hono/cookie";
-import { puzzlePage, puzzlePageLast } from "../views/puzzle";
+import { puzzlePage, puzzlePageLast } from "../views";
 
 
 
