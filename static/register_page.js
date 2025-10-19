@@ -1,7 +1,7 @@
 
 const CLOSE = `<span class="close" onclick="this.parentElement.style.display='none'">✖</span>`
 
-document.getElementById("loginForm").addEventListener("submit", async (event) => {
+document.getElementById("registerForm").addEventListener("submit", async (event) => {
     event.preventDefault();
 
     const email = document.getElementById("email").value.trim();
@@ -9,7 +9,7 @@ document.getElementById("loginForm").addEventListener("submit", async (event) =>
     const message = document.getElementById("message");
 
     try {
-        const res = await fetch("/login", {
+        const response = await fetch("/register", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -17,13 +17,13 @@ document.getElementById("loginForm").addEventListener("submit", async (event) =>
             body: JSON.stringify({ email, password }),
         });
 
-        const data = await res.json();
+        const data = await response.json();
 
-        if (res.ok) {
-            alert("Login successful!");
+        if (response.ok) {
+            alert("Check your email for verification link!");
             setTimeout(() => { window.location.href = "/"; }, 300);
         } else {
-            errMessage(message, data.err || "Login failed");
+            errMessage(message, data.err || "Registration failed");
         }
     } catch (err) {
         console.error("Error:", err);

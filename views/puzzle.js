@@ -1,4 +1,4 @@
-import { head } from "./const"
+import { head, navbar } from "./const"
 
 
 export function puzzlePage(id, file, insight, solved = false, validKey = true) {
@@ -8,8 +8,7 @@ export function puzzlePage(id, file, insight, solved = false, validKey = true) {
     Hmm... that password/key doesn’t seem quite right.<br>
     Take another look — maybe there’s a small hint you missed?
     <span class="close" onclick="this.parentElement.style.display='none'">✖</span>
-</div>
-        `
+</div>`
     : ''
 
     const success = solved
@@ -21,7 +20,7 @@ export function puzzlePage(id, file, insight, solved = false, validKey = true) {
     </p>
 
     <button class="next-btn" onclick="location.href='/${id + 1}?next=true'">
-        ➡️ Next Puzzle
+        Next Puzzle
     </button>
 
     <h4>Author’s notes:</h4>
@@ -31,8 +30,7 @@ export function puzzlePage(id, file, insight, solved = false, validKey = true) {
         the puzzles.
     </p>
     <p class="afterword">${insight}</p>
-</div>
-        `
+</div>`
         : ''
 
     return `
@@ -40,16 +38,15 @@ export function puzzlePage(id, file, insight, solved = false, validKey = true) {
 <html lang="en">
 ${head(`Puzzle ${id}`)}
 <body>
+    ${navbar()}
     ${banner}
         <div class="container">
         <h1>Puzzle ${id}</h1>
-        <a href="/">Home</a>
         ${success}
         <embed src="/static/${file}" type="application/pdf">
     </div>
 </body>
-</html>
-  `
+</html>`
 }
 
 export function puzzlePageLast(id, valid = true) {
@@ -62,25 +59,24 @@ export function puzzlePageLast(id, valid = true) {
 <html lang="en">
 ${head(`Puzzle ${id}`)}
 <body>
-  <div class="container">
+    ${navbar()}
+    <div class="container">
     <h1>Puzzle ${id}</h1>
-    <a href="/">Home</a>
 
     <div class="info section">
-      <h2>🧩 This cipher doesn’t exist or was the last one in the series.</h2>
+        <h2>🧩 This cipher doesn’t exist or was the last one in the series.</h2>
     </div>
 
     <div class="last section">
-      <p>Unfortunately, ${reason}</p>
-      <p>
+        <p>Unfortunately, ${reason}</p>
+    <p>
         I’ll try to make a new one every week —  
         so if you’d like, keep checking back here from time to time.
-      </p>
-      <p>Thanks for solving and being part of it 💫</p>
-    </div>
-  </div>
+    </p>
+    <p>Thanks for solving and being part of it 💫</p>
+</div>
+</div>
 </body>
-</html>
-    `
+</html>`
 }
 

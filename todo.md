@@ -3,13 +3,16 @@
 Literally it will stay like is, with no framework and extremely light weight
 
 - [x] switch to bun
-- [ ] rewrite to TS
-    - [ ] nicer views functions/calls
+- [x] rewrite to TS
+    - [x] nicer views functions/calls
 - [x] add mongo
 - [ ] Login
     - [x] user storing
     - [x] token storing
-    - [ ] nice page
+    - [x] nice page
+    - [ ] request reset
+    - [ ] verify
+    - [ ] reset
 - [x] Chat
     - [x] create chat page
     - [x] forward questions to and fro discord

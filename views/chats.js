@@ -1,5 +1,5 @@
 import { SUPPORT_MAIL } from "../backend/consts";
-import { head } from "./const";
+import { head, navbar } from "./const";
 
 
 
@@ -9,13 +9,12 @@ export function chatsPage() {
 <html lang="en">
 ${head("Messages")}
 <body>
-
+${navbar()}
 <div class="info banner">
     💬 If something doesn’t seem to work or you just feel ignored, send me a mail at 
     <a href="mailto:${SUPPORT_MAIL}">${SUPPORT_MAIL}</a> — I am happy to help!
 </div>
-
-<div class="container fullheight" style="height: calc(100vh - 8rem)">
+<div class="container fullheight" style="height: calc(100vh - 11rem)">
     <h2>Messages</h2>
     <div id="messages" class="messages">Loading messages...</div>
 

@@ -23,9 +23,7 @@ async function loadMessages(offset = 0) {
         });
         const data = await res.json();
 
-        if (data.err) {
-            throw Error(data.err);
-        }
+        if (data.err) throw new Error(data.err);
         
         const msgs = data.msgs || [];
 
@@ -90,13 +88,16 @@ document.getElementById('messageForm').addEventListener('submit', async (e) => {
             body: formData
         });
 
-        if (!res.ok) throw new Error('Failed to post message');
+        const data = await res.json();
+
+        if (!res.ok) throw new Error(data.err);
 
         document.getElementById('text').value = '';
         document.getElementById('file').value = '';
         document.getElementById('attachedFile').textContent = '';
         loadMessages();
     } catch (err) {
+        console.error(err);
         alert('You are not logged in. Try logining in.');
     }
 });
@@ -108,6 +109,7 @@ document.getElementById('attachBtn').addEventListener('click', () => {
 document.getElementById('file').addEventListener('change', () => {
     const file = document.getElementById('file').files[0];
     const fileLabel = document.getElementById('attachedFile');
+
     if (file) {
         if (!(file.type.startsWith('image/') || file.type === 'application/pdf')) {
             alert('Only images or PDFs are allowed.');

@@ -1,7 +1,7 @@
 import { serveStatic } from "hono/bun";
 import { Hono, type Context } from "hono";
 
-import { auth, login, register, requestReset, resetPassword, verifyEmail } from "./backend/auth";
+import { auth, login, logout, register, requestReset, resetPassword, verifyEmail } from "./backend/auth";
 import { getMessages, postMessage, threadResponse } from "./backend/chat";
 import { getCipher } from "./backend/ciphers";
 import { PORT } from "./backend/consts";
@@ -26,18 +26,20 @@ app.get("/", (c: Context) => {
 
 app.post("/register", register);
 app.post("/login", login);
+app.post("/logout", auth, logout)
 app.get("/verify", (ctx: Context) => {
     const token = ctx.req.query("token") || "";
     return verifyEmail(ctx, token);
 });
-app.get("/requestReset", requestReset);
-app.get("/resetPassword", (ctx) => {
+app.post("/requestReset", requestReset);
+app.get("/resetPassword", (ctx: Context) => {
     const token = ctx.req.query("token") || "";
     return resetPassword(ctx, token);
 });
 
 app.get("/chats", (ctx: Context) => ctx.html(chatsPage()));
 app.get("/login", (ctx: Context) => ctx.html(loginPage()));
+app.get("/register", (ctx: Context) => ctx.html(loginPage(true)));
 
 app.post("/postMessage", auth, postMessage);
 app.post("/getMessages", auth, getMessages);

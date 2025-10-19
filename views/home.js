@@ -1,4 +1,4 @@
-import { head } from "./const";
+import { head, navbar } from "./const";
 
 export function homePage() {
     return `
@@ -6,6 +6,7 @@ export function homePage() {
 <html lang="en">
 ${head("Puzzle Home")}
 <body>
+    ${navbar()}
     <div class="container">
         <h1>Welcome</h1>
         <p>

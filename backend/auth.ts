@@ -2,9 +2,8 @@ import bcrypt from "bcrypt";
 import { v4 as uuidv4 } from "uuid";
 import nodemailer from "nodemailer";
 import type { Context, Next } from "hono";
-import { getCookie } from "hono/cookie";
+import { deleteCookie, getCookie, setCookie } from "hono/cookie";
 import type { ObjectId, WithId } from "mongodb";
-import { Cookie } from "bun";
 
 import { Err, Ok, TLogin, TReset, TRqReset, validateData, type ISession, type IUser, type Result } from "./types";
 import { throwError } from "./funcs";
@@ -32,8 +31,7 @@ export async function register(ctx: Context) {
 
     const exists = await users.findOne<WithId<IUser>>({ email });
     if ( exists ) {
-        ctx.status(400);
-        return ctx.text("User already exists")
+        return throwError(ctx, 400, "User already exists");
     };
 
     const hashed = bcrypt.hash(password, 10);
@@ -74,7 +72,7 @@ export async function verifyEmail(ctx: Context, token: string) {
             { _id: user._id },
             { $set: { is_verified: true }, $unset: { verify_token: "" } })
         .then(_ => openSession(user._id))
-        .then(token => setSessionCookie(ctx.res, token))
+        .then(token => setSessionCookie(ctx, token))
         .then(_ => ctx.json({msg: "Email verified"}));
 }
 
@@ -104,8 +102,19 @@ export async function login(ctx: Context) {
     }
 
     return openSession(user._id)
-        .then(token => setSessionCookie(ctx.res, token))
+        .then(token => setSessionCookie(ctx, token))
         .then(_ => ctx.json({msg: "Logged in"}))
+}
+
+export async function logout(ctx: Context) {
+    const session_token = getCookie(ctx, "session") || "";
+    
+    await db.collection<ISession>("sessions")
+        .deleteMany({ token: session_token });
+
+    deleteCookie(ctx, "session");
+    deleteCookie(ctx, "isauth");
+    return ctx.json({ msg: "Logged out"});
 }
 
 async function openSession(user_id: ObjectId): Promise<string> {
@@ -139,11 +148,23 @@ export async function checkSession(token: string): Promise<Result<ObjectId, stri
         });
 } 
 
-function setSessionCookie(res: Response, token: string) {
-    res.headers.set(
-        "Set-Cookie",
-        new Cookie("session", token, { path: "/", secure: true, httpOnly: true, maxAge: MAX_AGE }).toString()
-    );
+function setSessionCookie(ctx: Context, token: string) {
+    setCookie(ctx, "session", token, {
+        path: "/",
+        secure: true,
+        httpOnly: true,
+        maxAge: MAX_AGE,
+        expires: new Date(Date.now() + MAX_AGE * 1000),
+        sameSite: "Strict"
+    });
+    setCookie(ctx, "isauth", "true", {
+        path: "/",
+        secure: true,
+        httpOnly: false,
+        maxAge: MAX_AGE,
+        expires: new Date(Date.now() + MAX_AGE * 1000),
+        sameSite: "Strict"
+    });
 }
 
 export async function auth(ctx: Context, next: Next) {
