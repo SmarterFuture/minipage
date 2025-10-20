@@ -11,7 +11,7 @@ ${head("Messages")}
 <body>
 ${navbar()}
 <div class="info banner">
-    💬 If something doesn’t seem to work or you just feel ignored, send me a mail at 
+    💬 If something doesn’t seem to work or you just feel ignored, send me an email at 
     <a href="mailto:${SUPPORT_MAIL}">${SUPPORT_MAIL}</a> — I am happy to help!
 </div>
 <div class="container fullheight" style="height: calc(100vh - 11rem)">

@@ -61,8 +61,8 @@ function displayAtt(att) {
         .join("");
 }
 
-document.getElementById('messageForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
+document.getElementById('messageForm').addEventListener('submit', async (event) => {
+    event.preventDefault();
     const text = document.getElementById('text').value.trim();
     const fileInput = document.getElementById('file');
     const file = fileInput.files[0];

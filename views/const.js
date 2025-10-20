@@ -12,9 +12,11 @@ export function head(title) {
 
 export function navbar() {
     return `
-<nav class="navbar">
+<nav class="navbar" id="navbar">
     <div class="nav-links">
-        <a href="/" class="nav-link">Home</a>
+        <div id="home-link">
+            <a href="/" class="nav-link">Home</a>
+        </div>
         <a href="/chats" class="nav-link">Chat</a>
         <div id="auth-link">
             <a href="/login" class="nav-link">Login</a>
@@ -22,6 +24,6 @@ export function navbar() {
         <a href="https://buymeacoffee.com/SmarterFuture" class="nav-link" target="_blank" rel="noopener noreferrer">Coffee</a>
     </div>
 </nav>
-<script src="/js/navbar_page.js"></script>
+<script type="module" src="/js/navbar_page.js"></script>
     `;
 }

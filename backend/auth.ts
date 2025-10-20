@@ -9,6 +9,7 @@ import { Err, Ok, TLogin, TReset, TRqReset, validateData, type ISession, type IU
 import { throwError } from "./funcs";
 import { db } from "./setup";
 import { BASE_URL, MAIL_LOGIN, MAIL_PASS, MAIL_USER, MAX_AGE } from "./consts";
+import { setNext } from "./ciphers";
 
 
 const transporter = nodemailer.createTransport({
@@ -103,8 +104,11 @@ export async function login(ctx: Context) {
         return throwError(ctx, 400, "Invalid password");
     }
 
+    const next_cipher = Math.max(...Object.keys(user.solved || {0: 0}).map(Number));
+
     return openSession(user._id)
         .then(token => setSessionCookie(ctx, token))
+        .then(_ => setNext(ctx, next_cipher + 1))
         .then(_ => ctx.json({msg: "Logged in"}))
 }
 
@@ -114,6 +118,10 @@ export async function logout(ctx: Context) {
     await db.collection<ISession>("sessions")
         .deleteMany({ token: session_token });
 
+    return weakLogout(ctx);
+}
+
+export async function weakLogout(ctx: Context) {
     deleteCookie(ctx, "session");
     deleteCookie(ctx, "isauth");
     return ctx.json({ msg: "Logged out"});

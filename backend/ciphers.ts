@@ -3,10 +3,18 @@ import type { IUser } from "./types";
 import { checkSession } from "./auth";
 import { db } from "./setup";
 import type { ICipher } from "./types/db";
-import { getCookie } from "hono/cookie";
+import { getCookie, setCookie } from "hono/cookie";
 import { puzzlePage, puzzlePageLast } from "../views";
 
 
+export async function setNext(ctx: Context, id: number) {
+    setCookie(ctx, "tonext", id.toString(), {
+        path: "/",
+        secure: true,
+        httpOnly: false,
+        sameSite: "Strict"
+    })
+}
 
 export async function getCipher(ctx: Context, id: number, pass: string | null, next = false) {
     const token = getCookie(ctx, "session");
@@ -18,7 +26,7 @@ export async function getCipher(ctx: Context, id: number, pass: string | null, n
         guest = true;
     } else {
         guest = false;
-        user_id = session.data.id;
+        user_id = session.data;
     }
     
     const cipher = await db
@@ -39,7 +47,7 @@ export async function getCipher(ctx: Context, id: number, pass: string | null, n
     }
     
     if (!guest) {
-        const obj_id = cipher._id.toString();
+        const obj_id = cipher.cipher_id.toString();
         const key = `solved.${obj_id}`;
         db.collection<IUser>("users")
             .updateOne(
@@ -47,6 +55,6 @@ export async function getCipher(ctx: Context, id: number, pass: string | null, n
                 { $set: { [key]: new Date() }}
             )
     }
-
+    await setNext(ctx, id + 1);
     return ctx.html(puzzlePage(id, cipher.file.filename, cipher.afterword, true))
 }

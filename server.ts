@@ -27,7 +27,8 @@ app.get("/", (c: Context) => {
 
 app.post("/register", register);
 app.post("/login", login);
-app.post("/logout", auth, logout)
+app.post("/logout", auth, logout);
+app.post("/weak-logout", logout);
 
 app.post("/request-reset", requestReset);
 app.post("/reset-password", resetPassword);
