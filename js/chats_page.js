@@ -16,7 +16,7 @@ async function loadMessages(offset = 0) {
 
     messagesDiv.textContent = 'Loading messages...';
     try {
-        const res = await fetch('/getMessages', {
+        const res = await fetch('/get-messages', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({ start: PAGE_SIZE * offset, end: PAGE_SIZE * (offset + 1) })
@@ -83,7 +83,7 @@ document.getElementById('messageForm').addEventListener('submit', async (e) => {
     }
 
     try {
-        const res = await fetch('/postMessage', {
+        const res = await fetch('/post-message', {
             method: 'POST',
             body: formData
         });

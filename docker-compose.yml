@@ -21,6 +21,8 @@ services:
       - ".env"
     command: >
       mongod --auth
+    volumes:
+      - db-data:/data/db
 
 volumes:
   db-data:

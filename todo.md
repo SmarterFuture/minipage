@@ -6,13 +6,13 @@ Literally it will stay like is, with no framework and extremely light weight
 - [x] rewrite to TS
     - [x] nicer views functions/calls
 - [x] add mongo
-- [ ] Login
+- [x] Login
     - [x] user storing
     - [x] token storing
     - [x] nice page
-    - [ ] request reset
-    - [ ] verify
-    - [ ] reset
+    - [x] request reset
+    - [x] verify
+    - [x] reset
 - [x] Chat
     - [x] create chat page
     - [x] forward questions to and fro discord
@@ -30,5 +30,5 @@ Literally it will stay like is, with no framework and extremely light weight
     - [x] nice page
 - [ ] ~Nicer submit page~
     - [ ] ~move behind the scene here, when correct~
-- [ ] add nav bar
+- [x] add nav bar
 - [ ] next/solving -> moves to currently solving cipher from cookie

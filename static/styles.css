@@ -339,3 +339,8 @@ a.button:hover {
     font-size: 0.85rem;
 }
 
+.tiny-a {
+    font-size: 0.8rem;
+    font-weight: normal;
+    text-decoration: none;
+}

@@ -38,6 +38,7 @@ export const TRqReset = object({
 })
 
 export const TReset = object({
+    token: string(),
     password: string()
 })
 

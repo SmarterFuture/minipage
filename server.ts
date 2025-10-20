@@ -7,7 +7,7 @@ import { getCipher } from "./backend/ciphers";
 import { PORT } from "./backend/consts";
 import { checkAccess } from "./backend/files";
 import { discord_client } from "./backend/setup/discord";
-import { chatsPage, homePage, loginPage } from "./views";
+import { chatsPage, homePage, loginPage, resetPage } from "./views";
 
 
 
@@ -17,6 +17,7 @@ discord_client.on("messageCreate", threadResponse);
 
 
 app.use("/static/*", serveStatic({ root: "./" }));
+app.use("/js/*", serveStatic({ root: "./" }));
 
 app.use("/filebin/:userid/:file{.+}", auth, checkAccess, serveStatic({ root: "./"}))
 
@@ -27,22 +28,22 @@ app.get("/", (c: Context) => {
 app.post("/register", register);
 app.post("/login", login);
 app.post("/logout", auth, logout)
+
+app.post("/request-reset", requestReset);
+app.post("/reset-password", resetPassword);
+
 app.get("/verify", (ctx: Context) => {
     const token = ctx.req.query("token") || "";
     return verifyEmail(ctx, token);
-});
-app.post("/requestReset", requestReset);
-app.get("/resetPassword", (ctx: Context) => {
-    const token = ctx.req.query("token") || "";
-    return resetPassword(ctx, token);
 });
 
 app.get("/chats", (ctx: Context) => ctx.html(chatsPage()));
 app.get("/login", (ctx: Context) => ctx.html(loginPage()));
 app.get("/register", (ctx: Context) => ctx.html(loginPage(true)));
+app.get("/reset-password", (ctx: Context) => ctx.html(resetPage()));
 
-app.post("/postMessage", auth, postMessage);
-app.post("/getMessages", auth, getMessages);
+app.post("/post-message", auth, postMessage);
+app.post("/get-messages", auth, getMessages);
 
 app.get("/:id_pass", (ctx: Context) => {
     const id_pass = ctx.req.param("id_pass");

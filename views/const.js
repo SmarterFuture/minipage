@@ -22,6 +22,6 @@ export function navbar() {
         <a href="https://buymeacoffee.com/SmarterFuture" class="nav-link" target="_blank" rel="noopener noreferrer">Coffee</a>
     </div>
 </nav>
-<script src="/static/navbar_page.js"></script>
+<script src="/js/navbar_page.js"></script>
     `;
 }

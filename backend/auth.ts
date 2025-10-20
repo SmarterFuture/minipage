@@ -65,15 +65,17 @@ export async function verifyEmail(ctx: Context, token: string) {
 
     const user = await users.findOne<WithId<IUser>>({ verify_token: token });
     if (!user) { 
-        return throwError(ctx, 400, "Invalid token")
+        throwError(ctx, 400, "Invalid token");
+        return ctx.redirect("/?verified=false");
     };
 
     return users.updateOne(
             { _id: user._id },
-            { $set: { is_verified: true }, $unset: { verify_token: "" } })
+            { $set: { is_verified: true }, $unset: { verify_token: "", active: "" } })
         .then(_ => openSession(user._id))
         .then(token => setSessionCookie(ctx, token))
-        .then(_ => ctx.json({msg: "Email verified"}));
+        .then(_ => ctx.json({msg: "Email verified"}))
+        .then(_ => ctx.redirect("/?verified=true"));
 }
 
 export async function login(ctx: Context) {
@@ -215,27 +217,27 @@ export async function requestReset(ctx: Context) {
     return users
         .updateOne({ _id: user._id },
             {
-                $set: { resetToken }
+                $set: { resetToken, active: new Date(Date.now() + MAX_AGE * 1000) }
             })
         .then(_ => sessions.deleteOne({user_id: user._id}))
         .then(_ => ctx.json({msg: "Password reset token sent"}));
 }
 
-export async function resetPassword(ctx: Context, token: string) {
+export async function resetPassword(ctx: Context) {
 
     const body = validateData(await ctx.req.json(), TReset);
     if ( !body.ok ) {
         return throwError(ctx, 400, body.error);
     }
 
-    const { password } = body.data;
+    const { token, password } = body.data;
 
     const users = db.collection<IUser>("users");
     const sessions = db.collection<ISession>("sessions");
-
-    const user = await users.findOne({ resetToken: token });
+    
+    const user = await users.findOne({ resetToken: token, active: { $gte: new Date() }});
     if ( !user ) {
-        return throwError(ctx, 400, "Invalid token");
+        return throwError(ctx, 400, "Invalid or expired token");
     }
 
     const hashed = bcrypt.hash(password, 10);
@@ -244,7 +246,7 @@ export async function resetPassword(ctx: Context, token: string) {
             { _id: user._id },
             { 
                 $set: { password: await hashed },
-                $unset: { reset_token: "" }
+                $unset: { reset_token: "", active: "" }
             })
         .then(_ => sessions.deleteOne({user_id: user._id}))
         .then(_ => ctx.json({msg: "Password reset successful"}));

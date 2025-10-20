@@ -29,7 +29,7 @@ ${navbar()}
     </form>
 </div>
 
-<script src="/static/chats_page.js"></script>
+<script src="/js/chats_page.js"></script>
 </body>
 </html>`;
 }

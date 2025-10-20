@@ -27,6 +27,7 @@ ${head(what)}
 
             <label for="password" class="l-desc">Password:</label>
             <input type="password" id="password" name="password" required class="l-inp" />
+            <a href="#" id="resetLink" class="tiny-a">Forgot password?</a> 
 
             <button type="submit" class="more-btn">${what}</button>
         </form>
@@ -34,7 +35,31 @@ ${head(what)}
             ${other_section}
         </div>
     </div>
-    <script src="/static/${lwhat}_page.js"></script>
+    <script type="module" src="/js/${lwhat}_page.js"></script>
+    <script type="module" src="/js/request_reset.js"></script>
+</body>
+</html>`;
+}
+
+export function resetPage() {
+    return `
+<!DOCTYPE html>
+<html lang="en">
+${head("Reset Password")}
+<body>
+    ${navbar()}
+    <div class="banner error" id="message" style="display: none"></div>
+    <div class="container">
+        <h2>Reset password</h2>
+
+        <form id="resetForm" class="l-form">
+            <label for="password" class="l-desc">New password:</label>
+            <input type="password" id="password" name="password" required class="l-inp" />
+
+            <button type="submit" class="more-btn">Reset password</button>
+        </form>
+    </div>
+    <script type="module" src="/js/reset_page.js"></script>
 </body>
 </html>`;
 }

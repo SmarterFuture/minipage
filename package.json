@@ -23,5 +23,5 @@
     "nodemailer": "^7.0.6",
     "superstruct": "^2.0.2",
     "uuid": "^13.0.0"
-  }
+  },
 }

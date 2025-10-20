@@ -37,6 +37,7 @@ ${head("Puzzle Home")}
         <a href="/0-this_is_KEY"><code>https://miniture.org/0-this_is_KEY</code></a>
         </p>
     </div>
+    <script src="/js/home_page.js"></script>
 </body>
 </html>
 `;}

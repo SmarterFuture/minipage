@@ -1,6 +1,6 @@
-import { loginPage } from "./login";
+import { loginPage, resetPage } from "./login";
 import { puzzlePage, puzzlePageLast } from "./puzzle";
 import { homePage } from "./home";
 import { chatsPage } from "./chats";
 
-export { loginPage, puzzlePageLast, puzzlePage, homePage, chatsPage };
+export { loginPage, puzzlePageLast, puzzlePage, homePage, chatsPage, resetPage };

@@ -1,5 +1,5 @@
+import { errMessage } from "./extras.js";
 
-const CLOSE = `<span class="close" onclick="this.parentElement.style.display='none'">✖</span>`
 
 document.getElementById("loginForm").addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -30,9 +30,3 @@ document.getElementById("loginForm").addEventListener("submit", async (event) =>
         errMessage(message, "Network error");
     }
 });
-
-function errMessage(element, message) {
-    element.style.display = "block";
-    element.innerHTML = message + CLOSE;
-}
-

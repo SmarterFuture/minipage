@@ -1,5 +1,5 @@
+import { errMessage } from "./extras.js";
 
-const CLOSE = `<span class="close" onclick="this.parentElement.style.display='none'">✖</span>`
 
 document.getElementById("registerForm").addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -20,7 +20,7 @@ document.getElementById("registerForm").addEventListener("submit", async (event)
         const data = await response.json();
 
         if (response.ok) {
-            alert("Check your email for verification link!");
+            alert("Check your email for verification link");
             setTimeout(() => { window.location.href = "/"; }, 300);
         } else {
             errMessage(message, data.err || "Registration failed");
@@ -30,9 +30,4 @@ document.getElementById("registerForm").addEventListener("submit", async (event)
         errMessage(message, "Network error");
     }
 });
-
-function errMessage(element, message) {
-    element.style.display = "block";
-    element.innerHTML = message + CLOSE;
-}
 
