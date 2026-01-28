@@ -10,5 +10,5 @@ COPY . .
 
 EXPOSE 18080
 
-CMD ["bun", "run", "server.js"]
+CMD ["bun", "run", "server.ts"]
 

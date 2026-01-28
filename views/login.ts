@@ -1,17 +1,18 @@
+import { html } from "hono/html";
 import { head, navbar } from "./const";
 
 
-export function loginPage(register = false) {
+export function loginPage(register: boolean = false) {
     
     const what = register ? "Register" : "Login";
     const lwhat = what.toLowerCase();
 
     const other_section = register ? 
-        `Already a user? <a href="/login">Log in!</a>`
+        html`Already a user? <a href="/login">Log in!</a>`
         :
-        `New here? <a href="/register"> Register!</a>`
+        html`New here? <a href="/register"> Register!</a>`
 
-    return `
+    return html`
 <!DOCTYPE html>
 <html lang="en">
 ${head(what)}
@@ -42,7 +43,7 @@ ${head(what)}
 }
 
 export function resetPage() {
-    return `
+    return html`
 <!DOCTYPE html>
 <html lang="en">
 ${head("Reset Password")}

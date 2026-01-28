@@ -1,6 +1,8 @@
+import { html } from "hono/html";
 
-export function head(title) {
-    return ` 
+
+export function head(title: string) {
+    return html` 
 <head>
     <meta charset="UTF-8">
     <title>${title}</title>
@@ -11,7 +13,7 @@ export function head(title) {
 }
 
 export function navbar() {
-    return `
+    return html`
 <nav class="navbar" id="navbar">
     <div class="nav-links">
         <div id="home-link">
@@ -23,7 +25,8 @@ export function navbar() {
         </div>
         <a href="https://buymeacoffee.com/SmarterFuture" class="nav-link" target="_blank" rel="noopener noreferrer">Coffee</a>
     </div>
+    <script type="module" src="/js/navbar_page.js"></script>
 </nav>
-<script type="module" src="/js/navbar_page.js"></script>
     `;
 }
+

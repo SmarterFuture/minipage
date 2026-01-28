@@ -9,6 +9,7 @@ import { throwError } from "./funcs";
 import { db, discord_client } from "./setup";
 import { DISCORD_CHANNEL_ID, FS_PATH, HOME_PATH } from "./consts";
 import { formDataToObject } from "./types/common";
+import { string } from "superstruct";
 
 
 function checkFileType(mimetype: string): boolean {
@@ -193,6 +194,8 @@ export async function getMessages(ctx: Context) {
             created: 1,
             attachment: 1,
         })
+        .skip(start)
+        .limit(end - start)
         .toArray()
-        .then(v => ctx.json({msgs: v.slice(start, end)}));
+        .then(v => ctx.json({msgs: v}));
 }
